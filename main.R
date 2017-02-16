@@ -5,7 +5,8 @@
 # source("/Users/lennartolsen/dev/machine-learning/excersise1/trunk/Basefolder/loadImage.R")
 ##
 source("doknn.R")
-dataset <- loadSinglePersonsData(300, "group12", 1, "2017/");
+source("cross_validation.r")
+dataset <- loadSinglePersonsData(100, "group12", 1, "2017/");
 dataset <- data.frame(dataset)
 set.seed(42)
 dataset_shuffle <- dataset[sample(nrow(dataset)),]
@@ -17,6 +18,13 @@ dataset_test <- dataset_shuffle[2001:4000,2:ncol(dataset)]
 dataset_train_labels <- dataset_shuffle[1:2000,1]
 dataset_test_labels <- dataset_shuffle[2001:4000,1]
 
-range <- 1:100
+#range <- 1:100
+#doKnn(dataset_train, dataset_test, dataset_train_labels, dataset_test_labels, range)
 
-doKnn(dataset_train, dataset_test, dataset_train_labels, dataset_test_labels, range)
+range <- 1:10
+folds <- 1:10
+
+cross_labels <- dataset_shuffle[1:nrow(dataset),1]
+cross_dataset <- dataset_shuffle[1:nrow(dataset),2:ncol(dataset)]
+
+doCross(cross_dataset,cross_labels, range, folds)
