@@ -6,25 +6,30 @@
 ##
 source("doknn.R")
 source("cross_validation.r")
-dataset <- loadSinglePersonsData(100, "group12", 1, "2017/");
+source("smooth_operator.r")
+source("load_em_all.r")
+
+dataset <- loadEmAll(c(12,10,1,2), c(1,2,3,4,5), 100, "2017/")
 dataset <- data.frame(dataset)
 set.seed(42)
 dataset_shuffle <- dataset[sample(nrow(dataset)),]
 
 ##Create a split set that generates a set of 1's and 0's, to further split the dataset
 #split_set <- sample(2, nrow(dataset_shuffle), replace=TRUE, prob=c(0.5, 0.5))
-dataset_train <- dataset_shuffle[1:2000,2:ncol(dataset)]
-dataset_test <- dataset_shuffle[2001:4000,2:ncol(dataset)]
-dataset_train_labels <- dataset_shuffle[1:2000,1]
-dataset_test_labels <- dataset_shuffle[2001:4000,1]
+minTest = nrow(dataset)*0.90
+maxTest = nrow(dataset)
+dataset_train <- dataset_shuffle[1:minTest - 1,2:ncol(dataset)]
+dataset_test <- dataset_shuffle[minTest:maxTest,2:ncol(dataset)]
+dataset_train_labels <- dataset_shuffle[1:minTest - 1,1]
+dataset_test_labels <- dataset_shuffle[minTest:maxTest,1]
 
-#range <- 1:100
-#doKnn(dataset_train, dataset_test, dataset_train_labels, dataset_test_labels, range)
+range <- 1:2
+doKnn(dataset_train, dataset_test, dataset_train_labels, dataset_test_labels, range)
 
-range <- 1:10
-folds <- 1:10
+#range <- 1:10
+#folds <- 1:10
 
-cross_labels <- dataset_shuffle[1:nrow(dataset),1]
-cross_dataset <- dataset_shuffle[1:nrow(dataset),2:ncol(dataset)]
+#cross_labels <- dataset_shuffle[1:nrow(dataset),1]
+#cross_dataset <- dataset_shuffle[1:nrow(dataset),2:ncol(dataset)]
 
-doCross(cross_dataset,cross_labels, range, folds)
+#doCross(cross_dataset,cross_labels, range, folds)

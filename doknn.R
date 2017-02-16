@@ -5,8 +5,8 @@ source("multiplot.r")
 doKnn <- function(train, test, train_labels, test_labels, range_k){
     ## TEST WITH MANY K's
     range <- range_k
-    accs <- rep(0, length(range))
-    speeds <- rep(0, length(range))
+    accs <<- rep(0, length(range))
+    speeds <<- rep(0, length(range))
     
     for (k in range) {
         startTime <- Sys.time();
@@ -28,8 +28,14 @@ doKnn <- function(train, test, train_labels, test_labels, range_k){
     # Calculate the best k
     which.max(accs)
     
-    plotspeed <- qplot(seq_along(speeds), speeds)+geom_point() + geom_smooth(method="lm",formula = y ~ splines::bs(x,3), se=FALSE)
+    plotspeed <- qplot(seq_along(speeds), speeds)+geom_point() + 
+        geom_smooth(method="lm",formula = y ~ splines::bs(x,3), se=FALSE) +
+        xlab("Time") + 
+        ylab("Accuracy")
     
-    plotacc <- qplot(seq_along(accs), accs)+geom_point() + geom_smooth(method="lm",formula = y ~ splines::bs(x,3), se=FALSE)
+    plotacc <- qplot(seq_along(accs), accs)+geom_point() + 
+        geom_smooth(method="lm",formula = y ~ splines::bs(x,3), se=FALSE) +
+        xlab("K Value") + 
+        ylab("Accuracy")
     multiplot(plotspeed, plotacc)
 }

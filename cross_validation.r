@@ -11,10 +11,8 @@ doCross <- function(dataset, labels, range_k, folds){
     
     for (k in range) {
         acc <- NULL
+        startTime <- Sys.time()
         for(fold in folds){
-            
-            startTime <- Sys.time();
-            
             minTest <- (fold - 1) *nrow(dataset)/max(folds)
             maxTest <- (fold) * nrow(dataset)/max(folds)
             subset.test <- dataset[ minTest : maxTest, ]
@@ -37,20 +35,25 @@ doCross <- function(dataset, labels, range_k, folds){
         }
         endTime <- Sys.time()
         speeds_cross[k] <- endTime - startTime
+        sds_cross[k] <<- sd(acc)
+        accs_cross[k] <<- mean(acc)
         print(k)
     }
     
     print('finito')
-    sds_cross[k] <- sd(acc)
-    accs_cross[k] <- mean(acc)
     # Calculate the best k
     which.max(accs_cross)
     
-    plotspeed <- qplot(seq_along(speeds_cross), speeds_cross)+geom_point() + geom_smooth(method="lm",formula = y ~ splines::bs(x,3), se=FALSE)
-    plotspeed + xlab("K Value") + ylab("Time")
+    plotspeed <- qplot(seq_along(speeds_cross), speeds_cross) + 
+        geom_point() + 
+        geom_smooth(method="lm",formula = y ~ splines::bs(x,3), se=FALSE)+ 
+        xlab("K Value") + 
+        ylab("Time")
     
-    plotacc <- qplot(seq_along(accs_cross), accs_cross, geom = "line" )+geom_errorbar(aes(x=seq_along(accs_cross), ymin=accs_cross-sds_cross, ymax=accs_cross+sds_cross), width=0.1, alpha= I(1/2))
-    plotacc + xlab("K Value") + ylab("Accuracy")
+    plotacc <- qplot(seq_along(accs_cross), accs_cross, geom = "line" ) +
+        geom_errorbar(aes(x=seq_along(accs_cross), ymin=accs_cross-sds_cross, ymax=accs_cross+sds_cross), width=0.1, alpha= I(1/2)) + 
+        xlab("K Value") + 
+        ylab("Accuracy")
     
     multiplot(plotspeed, plotacc)
 }
