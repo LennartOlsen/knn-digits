@@ -30,8 +30,8 @@ doKnn <- function(train, test, train_labels, test_labels, range_k){
     
     plotspeed <- qplot(seq_along(speeds), speeds)+geom_point() + 
         geom_smooth(method="lm",formula = y ~ splines::bs(x,3), se=FALSE) +
-        xlab("Time") + 
-        ylab("Accuracy")
+        xlab("K Value") + 
+        ylab("Time")
     
     plotacc <- qplot(seq_along(accs), accs)+geom_point() + 
         geom_smooth(method="lm",formula = y ~ splines::bs(x,3), se=FALSE) +

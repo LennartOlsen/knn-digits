@@ -4,7 +4,7 @@
 # Ex :
 # source("/Users/lennartolsen/dev/machine-learning/excersise1/trunk/Basefolder/loadImage.R")
 ##
-source("doknn.R")
+source("doknn.r")
 source("cross_validation.r")
 source("smooth_operator.r")
 source("load_em_all.r")

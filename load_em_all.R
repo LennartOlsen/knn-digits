@@ -1,5 +1,5 @@
 source("smooth_operator.r")
-source("load_single_group_member.R")
+source("load_single_group_member.r")
 
 ##
 # groups is an array of the groups you want,
