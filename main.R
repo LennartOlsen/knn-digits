@@ -9,7 +9,7 @@ source("cross_validation.r")
 source("smooth_operator.r")
 source("load_em_all.r")
 
-dataset <- loadEmAll(c(12,10,1,2), c(1,2,3,4,5), 100, "2017/")
+dataset <- loadEmAll(c(12,10), c(1,2,3,4,5), 100, "2017/")
 dataset <- data.frame(dataset)
 set.seed(42)
 dataset_shuffle <- dataset[sample(nrow(dataset)),]
@@ -23,7 +23,7 @@ dataset_test <- dataset_shuffle[minTest:maxTest,2:ncol(dataset)]
 dataset_train_labels <- dataset_shuffle[1:minTest - 1,1]
 dataset_test_labels <- dataset_shuffle[minTest:maxTest,1]
 
-range <- 1:2
+range <- 1:10
 doKnn(dataset_train, dataset_test, dataset_train_labels, dataset_test_labels, range)
 
 #range <- 1:10
